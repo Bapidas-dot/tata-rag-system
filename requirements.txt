@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+pydantic
+langchain
+langchain-community
+faiss-cpu
+openai
+pillow
+pymupdf
+pypdf
+sentence-transformers
+chromadb
+tqdm
+python-dotenv
