@@ -1,0 +1,7 @@
+#Python virtual environment
+bootcamp/
+
+#Environmentvariable files
+.environment
+# Secrets file
+secrets.txt

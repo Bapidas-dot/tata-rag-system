@@ -1,0 +1,28 @@
+
+
+
+
+
+
+
+
+
+
+
+docling-core=2.0.0
+
+Embeddings & Vector Store
+faiss-cpu=1.7.4
+sentence-transformers=2.2.0
+transformers=4.40.0
+
+# IBM Granite community utils
+ibm-granite-community
+
+# LLM hosting
+replicat=0.25.0
+
+# utilsgradio=4.0.0
+
+#Environment
+python-dotenv=1.0.0

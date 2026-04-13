@@ -1,5 +1,6 @@
 import os
 
+import fitz  # PyMuPDF (fallback reader)
 from transformers import logging as transformers_logging
 
 # LangChain tools for loading and splitting documents
@@ -33,8 +34,32 @@ def load_pdf(paths=None):
 
     documents = []
     for path in paths:
-        loader = PyPDFLoader(path)
-        documents.extend(loader.load())
+        try:
+            loader = PyPDFLoader(path)
+            loaded = list(loader.load())
+            print(f"Loaded {len(loaded)} docs from {path} via PyPDFLoader")
+            documents.extend(loaded)
+            continue
+        except Exception as e:
+            print(f"PyPDFLoader failed for {path}: {e}")
+
+        # Fallback to fitz when pypdf cannot parse.
+        try:
+            doc = fitz.open(path)
+            page_docs = []
+            for page_num in range(doc.page_count):
+                page = doc.load_page(page_num)
+                page_text = page.get_text()
+                page_docs.append(
+                    Document(page_content=page_text, metadata={"source": path, "page": page_num})
+                )
+            print(f"Loaded {len(page_docs)} docs from {path} via fitz fallback")
+            documents.extend(page_docs)
+        except Exception as e:
+            print(f"fitz fallback failed for {path}: {e}")
+
+    if not documents:
+        raise ValueError(f"No documents loaded from paths: {paths}")
 
     print(f"OK loaded {len(documents)} documents from {paths}")
     return documents
